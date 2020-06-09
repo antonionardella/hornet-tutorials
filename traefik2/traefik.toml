@@ -1,0 +1,33 @@
+#InsecureSkipVerify = true 
+defaultEntryPoints = ["https", "http"]
+
+[api]
+  dashboard = true
+
+[log]
+  level = "ERROR" # DEBUG
+  filePath = "/var/log/traefik/traefik.log"
+
+[accessLog]
+  filePath = "/var/log/traefik/traefik_access.log"
+  bufferingSize =  100
+
+[entryPoints]
+  [entryPoints.web]
+  address = ":80"
+  [entryPoints.websecure]
+  address = ":443"
+
+[providers]
+  [providers.file]
+    filename = "/etc/traefik/dynamic_conf.toml"
+    watch = true
+
+[certificatesResolvers.letsencrypt.acme]
+  email = "letsenc@antonionardella.it"
+  storage = "/etc/traefik/acme/acme.json"
+use caServer for debugging
+  caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  [certificatesResolvers.letsencrypt.acme.httpChallenge]
+    # used during the challenge
+    entryPoint = "web"
