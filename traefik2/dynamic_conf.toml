@@ -1,0 +1,45 @@
+[http.routers]
+  [http.routers.hornetapi-https]
+    rule = "Host(`hornet.example.com`)"
+    service = "hornetapi-loadbalancer"
+    entryPoints = ["websecure"]
+    [http.routers.hornetapi-https.tls]
+        certResolver = "letsencrypt"
+
+  [http.routers.hornetapi-http]
+    rule = "Host(`hornet.example.com`)"
+    service = "hornetapi-loadbalancer"
+    entryPoints = ["web"]
+    middlewares = ["hornet-scheme"]
+
+  [[http.services.hornetapi-loadbalancer.loadBalancer.servers]]
+    url = "http://localhost:14265" # to verify
+
+
+  [http.routers.hornetdb-https] # hornet dashboard
+    rule = "Host(`hornetdb.example.com`)"
+    service = "hornetdb-loadbalancer"
+    entryPoints = ["websecure"]
+    [http.routers.hornetdb-https.tls]
+        certResolver = "letsencrypt"
+
+  [http.routers.hornetdb-http]
+    rule = "Host(`hornetdb.example.com`)"
+    service = "hornetdb-loadbalancer"
+    entryPoints = ["web"]
+    middlewares = ["hornet-scheme"]
+
+  [[http.services.hornetdb-loadbalancer.loadBalancer.servers]]
+    url = "http://localhost:8081" # to verify
+
+  [http.routers.dash-api]
+    rule = "Host(`traefikdb.example.com`)"
+    service = "api@internal"
+    middlewares = ["api-auth"]
+
+  [http.middlewares]
+    [http.middlewares.hornet-scheme.redirectScheme]
+      scheme = "https" 
+      permanent = true
+    [http.middlewares.api-auth.basicAuth]
+      users = ["admin:yoursalthere"]
