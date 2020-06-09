@@ -24,9 +24,9 @@ defaultEntryPoints = ["https", "http"]
     watch = true
 
 [certificatesResolvers.letsencrypt.acme]
-  email = "letsenc@antonionardella.it"
+  email = "admin@example.com"
   storage = "/etc/traefik/acme/acme.json"
-use caServer for debugging
+  # use this caServer for debugging
   caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   [certificatesResolvers.letsencrypt.acme.httpChallenge]
     # used during the challenge
