@@ -19,5 +19,3 @@
     [http.middlewares.hornet-scheme.redirectScheme]
       scheme = "https" 
       permanent = true
-    [http.middlewares.api-auth.basicAuth]
-      users = ["admin:yoursalthere"]
